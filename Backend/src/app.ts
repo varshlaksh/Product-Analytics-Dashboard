@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.routes";
+import trackRoutes from "./routes/track.routes";
+import analyticsRoutes from "./routes/analytics.routes"
 const app = express();
 
 app.get("/health", (req, res) => {
@@ -18,6 +20,8 @@ app.use((req, res, next) => {
 });
 
 app.use("/auth", authRoutes);
+app.use("/track", trackRoutes);
+app.use("/analytics", analyticsRoutes)
 
 
 export default app;
