@@ -1,0 +1,113 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: clamp(16px, 2.5vw, 24px);
+  position: relative;
+  overflow: hidden;
+  animation: fadeUp 0.4s ease both;
+}
+
+/* top accent line */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 20%; right: 20%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--top-line, var(--accent)), transparent);
+  opacity: 0.5;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 10px;
+}
+
+.title {
+  font-size: clamp(13px, 2vw, 15px);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.badgeActive {
+  border-color: var(--accent3);
+  color: var(--accent3);
+}
+
+/* chart area */
+.chartWrap {
+  position: relative;
+  height: clamp(200px, 28vw, 280px);
+}
+
+/* loading overlay */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  z-index: 10;
+}
+
+.spinner {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+/* empty state */
+.empty {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.emptyIcon { font-size: 26px; }
+
+.emptyText {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* feature hint */
+.hint {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent3);
+  margin-top: 10px;
+  min-height: 15px;
+}

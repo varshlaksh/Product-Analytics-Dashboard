@@ -1,0 +1,94 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── shell: sidebar + main side-by-side ── */
+.shell {
+  display: flex;
+  flex: 1;
+}
+
+/* ── main content area ── */
+.main {
+  flex: 1;
+  min-width: 0;
+  padding: clamp(16px, 3vw, 28px);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── page header ── */
+.pageHeader h1 {
+  font-size: clamp(20px, 4vw, 26px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  animation: fadeUp 0.3s ease both;
+}
+
+.pageHeader p {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+  animation: fadeUp 0.3s ease 0.05s both;
+}
+
+/* ── stats row ── */
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+/* ── charts grid ── */
+.chartsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ── Responsive breakpoints ── */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .chartsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Mobile — charts stack, stats reflow */
+@media (max-width: 768px) {
+  .chartsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .statsRow {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+  .statsRow {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* 3rd stat card takes full width */
+  .statsRow > :nth-child(3) {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Tiny screens */
+@media (max-width: 340px) {
+  .statsRow {
+    grid-template-columns: 1fr;
+  }
+
+  .statsRow > :nth-child(3) {
+    grid-column: auto;
+  }
+}

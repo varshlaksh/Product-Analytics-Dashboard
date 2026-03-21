@@ -1,0 +1,224 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── background blobs ── */
+.bgLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.glow1 {
+  position: absolute;
+  width: min(520px, 90vw);
+  height: min(520px, 90vw);
+  background: radial-gradient(circle, rgba(0,240,200,0.07) 0%, transparent 70%);
+  top: -10%; right: -10%;
+  animation: drift1 8s ease-in-out infinite;
+}
+
+.glow2 {
+  position: absolute;
+  width: min(420px, 80vw);
+  height: min(420px, 80vw);
+  background: radial-gradient(circle, rgba(255,95,126,0.06) 0%, transparent 70%);
+  bottom: -10%; left: -5%;
+  animation: drift2 10s ease-in-out infinite;
+}
+
+/* ── wrapper ── */
+.wrapper {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+  animation: fadeUp 0.5s ease both;
+}
+
+/* ── brand ── */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.brandDot {
+  display: block;
+  width: 9px; height: 9px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 14px var(--accent);
+  animation: pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+.brandName {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* ── card ── */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: clamp(20px, 6vw, 44px);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 20%; right: 20%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.8;
+}
+
+/* ── tabs ── */
+.tabs {
+  display: flex;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 24px;
+  gap: 4px;
+}
+
+.tab {
+  flex: 1;
+  padding: 9px;
+  border: none;
+  background: none;
+  border-radius: 7px;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  letter-spacing: 0.02em;
+}
+
+.tab:hover:not(.tabActive) { color: var(--text); }
+.tabActive { background: var(--border2); color: var(--text); }
+
+/* ── error ── */
+.errorBox {
+  background: rgba(255, 95, 126, 0.08);
+  border: 1px solid rgba(255, 95, 126, 0.25);
+  color: var(--accent2);
+  padding: 11px 14px;
+  border-radius: 9px;
+  font-family: var(--mono);
+  font-size: 12px;
+  margin-bottom: 14px;
+}
+
+/* ── form head ── */
+.formHead {
+  margin-bottom: 22px;
+}
+
+.formHead h1 {
+  font-size: clamp(20px, 5vw, 27px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.formHead p {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+
+/* ── fields ── */
+.field {
+  margin-bottom: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.field label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 12px 14px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0, 240, 200, 0.1);
+}
+
+.field input::placeholder { color: var(--muted); }
+.field select option { background: var(--surface); color: var(--text); }
+
+.row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 360px) {
+  .row2 { grid-template-columns: 1fr; }
+}
+
+/* ── submit button ── */
+.submitBtn {
+  width: 100%;
+  padding: 14px;
+  background: var(--accent);
+  color: #000;
+  border: none;
+  border-radius: 9px;
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  margin-top: 6px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.submitBtn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 240, 200, 0.25);
+}
+
+.submitBtn:active { transform: translateY(0); }
+.submitBtn:disabled { opacity: 0.45; cursor: not-allowed; }

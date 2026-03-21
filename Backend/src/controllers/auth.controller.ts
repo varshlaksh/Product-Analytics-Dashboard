@@ -27,9 +27,15 @@ export const register = async (req: Request, res: Response) => {
 
     return res.status(201).json(user);
   } catch (error: any) {
-    console.error("REGISTER ERROR:", error);
-    return res.status(500).json({ error: "Something went wrong" });
+  console.error("REGISTER ERROR:", error);
+
+  // ✅ handle duplicate username gracefully
+  if (error.code === 'P2002') {
+    return res.status(400).json({ error: "Username already taken" });
   }
+
+  return res.status(500).json({ error: "Something went wrong" });
+}
 };
 
 // LOGIN
