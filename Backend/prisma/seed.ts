@@ -1,11 +1,7 @@
-import { PrismaClient, Gender } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
-
-// ── Config ──
-const TOTAL_USERS = 10;
-const TOTAL_CLICKS = 100;
 
 const FEATURES = [
   "date_filter",
@@ -16,9 +12,8 @@ const FEATURES = [
   "reset_filter",
 ];
 
-const GENDERS: Gender[] = [Gender.Male, Gender.Female, Gender.Other];
+const GENDERS = ["Male", "Female", "Other"]; // ← plain strings, no enum
 
-// ── Helpers ──
 function randomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -33,74 +28,53 @@ function randomDate(start: Date, end: Date): Date {
   );
 }
 
-// ── Main ──
 async function main() {
   console.log("🌱 Starting seed...\n");
 
-  // 1. Clean existing data
   console.log("🧹 Clearing existing data...");
   await prisma.featureClick.deleteMany();
   await prisma.user.deleteMany();
   console.log("✅ Cleared.\n");
 
-  // 2. Create 10 users
-  console.log(`👤 Creating ${TOTAL_USERS} users...`);
-
+  console.log("👤 Creating 10 users...");
   const hashedPassword = await bcrypt.hash("password123", 10);
   const users = [];
 
-  for (let i = 1; i <= TOTAL_USERS; i++) {
-    const gender = randomItem(GENDERS);
-    const age    = randomInt(15, 55);
-
+  for (let i = 1; i <= 10; i++) {
     const user = await prisma.user.create({
       data: {
         username: `user${i}`,
         password: hashedPassword,
-        age,
-        gender,
+        age:      randomInt(15, 55),
+        gender:   randomItem(GENDERS), 
       },
     });
-
     users.push(user);
-    console.log(`  ✓ user${i}  age: ${age}  gender: ${gender}`);
+    console.log(`  ✓ user${i}  age: ${user.age}  gender: ${user.gender}`);
   }
 
-  // 3. Create 100 feature click events spread across last 90 days
-  console.log(`\n📊 Creating ${TOTAL_CLICKS} feature clicks...`);
-
-  const now          = new Date();
+  console.log("\n📊 Creating 100 feature clicks...");
+  const now = new Date();
   const ninetyDaysAgo = new Date();
   ninetyDaysAgo.setDate(now.getDate() - 90);
 
-  for (let i = 0; i < TOTAL_CLICKS; i++) {
-    const user      = randomItem(users);
-    const feature   = randomItem(FEATURES);
-    const timestamp = randomDate(ninetyDaysAgo, now);
-
+  for (let i = 0; i < 100; i++) {
     await prisma.featureClick.create({
       data: {
-        user_id:      user.id,
-        feature_name: feature,
-        timestamp,
+        user_id:      randomItem(users).id,
+        feature_name: randomItem(FEATURES),
+        timestamp:    randomDate(ninetyDaysAgo, now),
       },
     });
   }
 
   console.log("✅ Clicks created.\n");
-
-  // 4. Print summary
-  const userCount  = await prisma.user.count();
-  const clickCount = await prisma.featureClick.count();
-
-  console.log("────────────────────────────");
+  console.log("────────────────────────────────");
   console.log("🎉 Seed complete!");
-  console.log(`   Users:          ${userCount}`);
-  console.log(`   Feature Clicks: ${clickCount}`);
-  console.log("────────────────────────────");
-  console.log("\n🔑 Login credentials:");
-  console.log("   username: user1  (or user2 … user10)");
-  console.log("   password: password123\n");
+  console.log(`   Users:          ${await prisma.user.count()}`);
+  console.log(`   Feature Clicks: ${await prisma.featureClick.count()}`);
+  console.log("────────────────────────────────");
+  console.log("\n🔑 Login: username: user1  password: password123\n");
 }
 
 main()

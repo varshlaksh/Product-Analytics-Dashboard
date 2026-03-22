@@ -1,27 +1,18 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
-// 1️⃣ Prisma Client Generator
 generator client {
   provider = "prisma-client-js"
 }
 
-// 2️⃣ Database Connection
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-// 3️⃣ Models (YOU ADD HERE 👇)
-
 model User {
-  id       Int      @id @default(autoincrement())
-  username String   @unique
+  id       Int            @id @default(autoincrement())
+  username String         @unique
   password String
   age      Int
-  gender   Gender
+  gender   String         // ← plain String, removed enum
   clicks   FeatureClick[]
 }
 
@@ -32,10 +23,4 @@ model FeatureClick {
   timestamp    DateTime @default(now())
 
   user User @relation(fields: [user_id], references: [id])
-}
-
-enum Gender {
-  Male
-  Female
-  Other
 }
