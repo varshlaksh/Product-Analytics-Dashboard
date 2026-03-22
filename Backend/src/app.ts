@@ -1,30 +1,47 @@
 import express from "express";
 import cors from "cors";
-import authRoutes from "./routes/auth.routes";
-import trackRoutes from "./routes/track.routes";
+import authRoutes      from "./routes/auth.routes";
+import trackRoutes     from "./routes/track.routes";
 import analyticsRoutes from "./routes/analytics.routes";
 
 const app = express();
 
-// ✅ CORS must be FIRST — before every route
+// ✅ CORS — reads from environment variable
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: function(origin, callback) {
+    const allowed = [
+      "http://localhost:5173",
+      "http://localhost:5174",
+      process.env.FRONTEND_URL || "",
+    ].filter(Boolean)
+
+    // allow Postman / curl (no origin)
+    if (!origin) return callback(null, true)
+
+    if (allowed.includes(origin)) {
+      callback(null, true)
+    } else {
+      console.log(`CORS blocked: ${origin}`)
+      callback(new Error(`CORS blocked: ${origin}`))
+    }
+  },
   credentials: true,
-}));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+}))
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 app.use((req, res, next) => {
-  console.log(`${req.method} ${req.path}`);
-  next();
-});
+  console.log(`${req.method} ${req.path}`)
+  next()
+})
 
 app.get("/health", (req, res) => {
-  res.json({ status: "ok" });
-});
+  res.json({ status: "ok", timestamp: new Date().toISOString() })
+})
 
-app.use("/auth", authRoutes);
-app.use("/track", trackRoutes);
-app.use("/analytics", analyticsRoutes);
+app.use("/auth",      authRoutes)
+app.use("/track",     trackRoutes)
+app.use("/analytics", analyticsRoutes)
 
-export default app;
+export default app
