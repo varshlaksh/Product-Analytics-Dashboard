@@ -9,21 +9,26 @@ const app = express();
 // ✅ CORS — reads from environment variable
 app.use(cors({
   origin: function(origin, callback) {
+    // allow no origin (Postman, curl)
+    if (!origin) return callback(null, true)
+
     const allowed = [
       "http://localhost:5173",
       "http://localhost:5174",
       process.env.FRONTEND_URL || "",
     ].filter(Boolean)
 
-    // allow Postman / curl (no origin)
-    if (!origin) return callback(null, true)
+    // allow any vercel.app URL automatically
+    if (origin.endsWith(".vercel.app")) {
+      return callback(null, true)
+    }
 
     if (allowed.includes(origin)) {
-      callback(null, true)
-    } else {
-      console.log(`CORS blocked: ${origin}`)
-      callback(new Error(`CORS blocked: ${origin}`))
+      return callback(null, true)
     }
+
+    console.log(`CORS blocked: ${origin}`)
+    callback(new Error(`CORS blocked: ${origin}`))
   },
   credentials: true,
 }))
