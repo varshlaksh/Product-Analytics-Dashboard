@@ -3,8 +3,9 @@
 An interactive self-tracking analytics dashboard. Every time a user interacts with filters or charts, those interactions are recorded and visualized in real time.
 
 ## 🌐 Live Demo
-- **Frontend:** https://your-app.vercel.app  
-- **Backend:**  https://your-backend.railway.app  
+- **Frontend:** [product-analytics-dashboard-alpha.vercel.app](https://product-analytics-dashboard-alpha.vercel.app)
+ 
+- **Backend:**  [https://your-backend.railway.app ](https://analytics-backend-1kls.onrender.com) 
 
 > Replace these URLs with your actual deployed URLs before submitting.
 
