@@ -1,6 +1,6 @@
 import { getToken, removeToken } from '../utils/auth'
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:6000'
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 async function request(path, options = {}) {
   const token = getToken()
